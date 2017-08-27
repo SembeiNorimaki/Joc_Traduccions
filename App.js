@@ -19,21 +19,45 @@ class Screen1 extends Component {
 class Screen2 extends Component{
   constructor(props) {
     super(props);
-    this.state = {text: ''};
+    this.state = {
+      text: ''
+    };
+
+    this.castella = '--';
+    this.catala = '--';
+
+    //this.componentDidMount = this.componentDidMount.bind(this);
+     
+  }
+
+  componentDidMount() {
+    let AllParaules = require('.Paraules/Paraules.json');
+    let AllCastella = Object.keys(AllParaules[0]);
+
+    // here the index must be randomly generated
+    // setting the state using previous state is required here to ensure
+    // sync updating
+    this.castella = AllCastella[1];
+    this.catala = AllParaules[0][this.castella];
+    // does not update on time
+    this.render();
   }
 
   validateInput(resposta) {
-    if (this.state.text === resposta) {
+    if (this.state.text === this.catala) {
       Alert.alert('Correcte')
     } else {
       Alert.alert('Incorrecte')
     }
   }
 
+  
+
   render() {
 
-    let paraula = 'Alfarero'
-    let resposta = 'Terrissaire'
+    
+    console.log(this.castella);
+    console.log(this.catala);
 
     return (
       <View style ={{flex: 1, justifyContent: 'center',  padding: 50}}>
@@ -43,7 +67,7 @@ class Screen2 extends Component{
         </Text>
 
         <Text>
-          {paraula}
+          {this.castella}
         </Text>
         
         <TextInput 
@@ -54,7 +78,7 @@ class Screen2 extends Component{
         />
         
         <Button
-          onPress={() => this.validateInput(resposta)}
+          onPress={() => this.validateInput()}
           title="Comprova!"
         />
       </View>
