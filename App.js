@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, Text, TextInput, View, Button, Alert } from 'react-native';
 
+import allWords from './Paraules/Paraules.json'
 
 class Screen1 extends Component {
 
@@ -20,54 +21,37 @@ class Screen2 extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      text: ''
-    };
-
-    this.castella = '--';
-    this.catala = '--';
-
-    //this.componentDidMount = this.componentDidMount.bind(this);
-     
+      text: '',
+      castella: '',
+      catala: ''
+    }; 
   }
 
   componentDidMount() {
-    let AllParaules = require('.Paraules/Paraules.json');
-    let AllCastella = Object.keys(AllParaules[0]);
-
-    // here the index must be randomly generated
-    // setting the state using previous state is required here to ensure
-    // sync updating
-    this.castella = AllCastella[1];
-    this.catala = AllParaules[0][this.castella];
-    // does not update on time
-    this.render();
   }
 
   validateInput(resposta) {
-    if (this.state.text === this.catala) {
+    if (this.state.text === this.state.catala) {
       Alert.alert('Correcte')
     } else {
       Alert.alert('Incorrecte')
     }
   }
 
-  
-
-  render() {
-
-    
-    console.log(this.castella);
-    console.log(this.catala);
+  render() { 
 
     return (
-      <View style ={{flex: 1, justifyContent: 'center',  padding: 50}}>
-        
+      <View style ={{flex: 1, justifyContent: 'center',  padding: 50}}>        
         <Text>
           Com es diu en català...
         </Text>
 
         <Text>
           {this.castella}
+        </Text>
+
+        <Text>
+          {this.catala}
         </Text>
         
         <TextInput 
@@ -86,6 +70,18 @@ class Screen2 extends Component{
   } 
 }
 
+export class MainMenu extends Component {
+  render() {
+
+    return (
+      <Text>
+        El joc dels barbarismes
+      </Text>
+      
+    );
+  }
+}
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -95,11 +91,18 @@ export default class App extends Component {
   }
 
   render() {
+    let toRender;
 
-    return (
-      <Screen2 /> 
+    if (this.state.screen === 'MainMenu') {
+      toRender.push(<MainMenu />);
+    } else {
+      toRender.push(<PlayScreen />);
+    }
+
+    return(
+      {toRender}
     );
-  }
+  }  
 }
 
 AppRegistry.registerComponent('AwesomeProject', () => App);
